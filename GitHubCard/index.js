@@ -3,9 +3,50 @@
            https://api.github.com/users/<your name>
 */
 
+/* axios.get(`https://api.github.com/users/jessemarek`)
+      .then(resp => {
+      })
+      .catch(err => {
+        console.log('Error:', err)
+      }) */
+
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
+
+
+   data:
+      login: "jessemarek"
+      id: 61661005
+      node_id: "MDQ6VXNlcjYxNjYxMDA1"
+      avatar_url: "https://avatars3.githubusercontent.com/u/61661005?v=4"
+      gravatar_id: ""
+      url: "https://api.github.com/users/jessemarek"
+      html_url: "https://github.com/jessemarek"
+      followers_url: "https://api.github.com/users/jessemarek/followers"
+      following_url: "https://api.github.com/users/jessemarek/following{/other_user}"
+      gists_url: "https://api.github.com/users/jessemarek/gists{/gist_id}"
+      starred_url: "https://api.github.com/users/jessemarek/starred{/owner}{/repo}"
+      subscriptions_url: "https://api.github.com/users/jessemarek/subscriptions"
+      organizations_url: "https://api.github.com/users/jessemarek/orgs"
+      repos_url: "https://api.github.com/users/jessemarek/repos"
+      events_url: "https://api.github.com/users/jessemarek/events{/privacy}"
+      received_events_url: "https://api.github.com/users/jessemarek/received_events"
+      type: "User"
+      site_admin: false
+      name: "Jesse Marek"
+      company: null
+      blog: ""
+      location: null
+      email: null
+      hireable: null
+      bio: null
+      public_repos: 19
+      public_gists: 0
+      followers: 12
+      following: 8
+      created_at: "2020-03-01T16:46:40Z"
+      updated_at: "2020-04-09T14:19:27Z"
 
    Skip to Step 3.
 */
