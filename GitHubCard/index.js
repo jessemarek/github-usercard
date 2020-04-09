@@ -51,8 +51,7 @@ axios.get(`https://api.github.com/users/jessemarek`)
            create a new component and add it to the DOM as a child of .cards
 */
 .then(resp => {
-  const cards = document.querySelector('.cards')
-  cards.appendChild(cardMaker(resp))
+  cards.appendChild(cardMaker(resp.data))
 })
 .catch(err => {
   console.log('Error:', err)
@@ -88,6 +87,7 @@ const followersArray = [];
 </div>
 
 */
+const cards = document.querySelector('.cards')
 
 function cardMaker(obj){
 //Create the elements
@@ -110,18 +110,6 @@ function cardMaker(obj){
 
         const profileLink= document.createElement('a')
 
-  //Structure the elements
-  card.appendChild(img)
-  card.appendChild(cardInfo)
-
-    cardInfo.appendChild(name)
-    cardInfo.appendChild(username)
-    cardInfo.appendChild(location)
-    cardInfo.appendChild(profile)
-    cardInfo.appendChild(followers)
-    cardInfo.appendChild(following)
-    cardInfo.appendChild(bio)
-
   //Add class names
   card.classList.add('card')
   cardInfo.classList.add('card-info')
@@ -129,57 +117,34 @@ function cardMaker(obj){
   username.classList.add('username')
 
   //Fill in the elements content
-  img.src = `${obj.data.avatar_url}`
-  name.textContent = `${obj.data.name}`
-  username.textContent = `${obj.data.login}`
-  location.textContent = `Location: ${obj.data.location}`
+  img.src = `${obj.avatar_url}`
+  name.textContent = `${obj.name}`
+  username.textContent = `${obj.login}`
+  location.textContent = `Location: ${obj.location}`
   profile.textContent = `Profile: `
-  //Add the link after the <p> contents are filled in
-  profile.appendChild(profileLink)
-  profileLink.href = `${obj.data.html_url}`
-  profileLink.textContent = `${obj.data.html_url}`
-  followers.textContent = `Followers: ${obj.data.followers}`
-  following.textContent = `Following: ${obj.data.following}`
-  bio.textContent = `Bio: ${obj.data.bio}`
+  profileLink.href = `${obj.html_url}`
+  profileLink.textContent = `${obj.html_url}`
+  followers.textContent = `Followers: ${obj.followers}`
+  following.textContent = `Following: ${obj.following}`
+  bio.textContent = `Bio: ${obj.bio}`
+
+    //Structure the elements
+    card.appendChild(img)
+    card.appendChild(cardInfo)
+  
+      cardInfo.appendChild(name)
+      cardInfo.appendChild(username)
+      cardInfo.appendChild(location)
+      cardInfo.appendChild(profile)
+      cardInfo.appendChild(followers)
+      cardInfo.appendChild(following)
+      cardInfo.appendChild(bio)
+
+      profile.appendChild(profileLink)
 
   return card
 }
 
-/* const resp = {data:{
-  login: "jessemarek",
-  id: 61661005,
-  node_id: "MDQ6VXNlcjYxNjYxMDA1",
-  avatar_url: "https://avatars3.githubusercontent.com/u/61661005?v=4",
-  gravatar_id: "",
-  url: "https://api.github.com/users/jessemarek",
-  html_url: "https://github.com/jessemarek",
-  followers_url: "https://api.github.com/users/jessemarek/followers",
-  following_url: "https://api.github.com/users/jessemarek/following{/other_user}",
-  gists_url: "https://api.github.com/users/jessemarek/gists{/gist_id}",
-  starred_url: "https://api.github.com/users/jessemarek/starred{/owner}{/repo}",
-  subscriptions_url: "https://api.github.com/users/jessemarek/subscriptions",
-  organizations_url: "https://api.github.com/users/jessemarek/orgs",
-  repos_url: "https://api.github.com/users/jessemarek/repos",
-  events_url: "https://api.github.com/users/jessemarek/events{/privacy}",
-  received_events_url: "https://api.github.com/users/jessemarek/received_events",
-  type: "User",
-  site_admin: false,
-  name: "Jesse Marek",
-  company: null,
-  blog: "",
-  location: null,
-  email: null,
-  hireable: null,
-  bio: null,
-  public_repos: 19,
-  public_gists: 0,
-  followers: 12,
-  following: 8,
-  created_at: "2020-03-01T16:46:40Z",
-  updated_at: "2020-04-09T14:19:27Z"}}
-
-  const cards = document.querySelector('.cards')
-cards.appendChild(cardMaker(resp)) */
 /* List of LS Instructors Github username's: 
   tetondan
   dustinmyers
@@ -187,3 +152,18 @@ cards.appendChild(cardMaker(resp)) */
   luishrd
   bigknell
 */
+
+axios.get(`https://api.github.com/users/jessemarek/followers`)
+    .then(resp =>{
+      resp.data.forEach(item => {
+        axios.get(`${item.url}`)
+              .then(resp => {
+                  cards.appendChild(cardMaker(resp.data))
+              })
+                .catch(err => console.log('ERROR:', err))
+              })
+    })
+    .catch(err => {
+      console.log('Error: ', err)
+    })
+
