@@ -66,7 +66,11 @@ axios.get(`https://api.github.com/users/jessemarek`)
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ['tetondan',
+                        'dustinmyers',
+                        'justsml',
+                        'luishrd',
+                        'bigknell'];
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -105,6 +109,7 @@ function cardMaker(obj){
       const followers = document.createElement('p')
       const following = document.createElement('p')
       const bio = document.createElement('p')
+      const repos = document.createElement('p')
 
         //inside the profile
 
@@ -127,6 +132,8 @@ function cardMaker(obj){
   followers.textContent = `Followers: ${obj.followers}`
   following.textContent = `Following: ${obj.following}`
   bio.textContent = `Bio: ${obj.bio}`
+  repos.textContent = `Repos: ${obj.public_repos}`
+
 
     //Structure the elements
     card.appendChild(img)
@@ -139,25 +146,22 @@ function cardMaker(obj){
       cardInfo.appendChild(followers)
       cardInfo.appendChild(following)
       cardInfo.appendChild(bio)
+      cardInfo.appendChild(repos)
 
       profile.appendChild(profileLink)
 
+  //Return the completed component
   return card
 }
 
-/* List of LS Instructors Github username's: 
-  tetondan
-  dustinmyers
-  justsml
-  luishrd
-  bigknell
-*/
-
+//Get all of my followers and make cards from their data
 axios.get(`https://api.github.com/users/jessemarek/followers`)
     .then(resp =>{
       resp.data.forEach(item => {
+        //request data for each follower
         axios.get(`${item.url}`)
               .then(resp => {
+                  //create a card for this follower and append it
                   cards.appendChild(cardMaker(resp.data))
               })
                 .catch(err => console.log('ERROR:', err))
@@ -167,3 +171,14 @@ axios.get(`https://api.github.com/users/jessemarek/followers`)
       console.log('Error: ', err)
     })
 
+
+//Add Folowers from a static array
+followersArray.forEach(user => {
+  axios.get(`https://api.github.com/users/${user}`)
+        .then(resp =>{
+          cards.appendChild(cardMaker(resp.data))
+        })
+        .catch(err => {
+          console.log('ERROR:', err)
+        })
+})
